@@ -1,0 +1,14 @@
+Manually Creating a Bootable USB Drive Using PowerShell
+
+Prepare Your USB Drive: Insert a USB flash drive (at least 8 GB) into your computer.
+Open PowerShell: Right-click the Start button and select Windows PowerShell (Admin).
+Use Diskpart: Type diskpart and press Enter. This will open the Diskpart utility.
+List Disks: Type list disk to see all connected drives. Identify your USB drive by its size.
+Select Your USB Drive: Type select disk X (replace X with the disk number of your USB drive) and press Enter.
+Clean the Drive: Type clean and press Enter to remove all partitions from the USB drive.
+Create a New Partition: Type create partition primary and press Enter.
+Select the New Partition: Type select partition 1 and press Enter.
+Format the Drive: Type format fs=ntfs quick and press Enter to format the drive.
+Make the Partition Active: Type active and press Enter.
+Assign a Drive Letter: Type assign letter=F (or any available letter) and press Enter.
+Copy Windows Files: Finally, copy the Windows installation files (from the ISO or extracted files) to the USB drive. 
