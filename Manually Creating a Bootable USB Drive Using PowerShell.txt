@@ -11,4 +11,5 @@ Select the New Partition: Type select partition 1 and press Enter.
 Format the Drive: Type format fs=ntfs quick and press Enter to format the drive.
 Make the Partition Active: Type active and press Enter.
 Assign a Drive Letter: Type assign letter=F (or any available letter) and press Enter.
-Copy Windows Files: Finally, copy the Windows installation files (from the ISO or extracted files) to the USB drive. 
+Copy Windows Files: Finally, copy the Windows installation files (from the ISO or extracted files) to the USB drive.
+cmd can be use the same way  
