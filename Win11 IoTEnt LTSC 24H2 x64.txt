@@ -1,0 +1,28 @@
+Win11 IoTEnt LTSC 24H2 x64
+
+Note: DISM can fail if the path contains spaces or special characters and isn’t quoted properly.
+
+- Displays information about images in a WIM file:
+
+DISM.exe /Get-WimInfo /WimFile:C:\Master.wim
+
+
+- Mounts an image from a WIM file:
+
+DISM.exe /Mount-Wim /WimFile:C:\W11IoTE.wim /index:1 /MountDir:C:\Folder
+
+
+- Install all of the extracted, unsigned drivers in the folder to the image using the /Recurse option:
+
+dism /Image:C:\Folder /Add-Driver /Driver:D:\FileRepository /Recurse /ForceUnsigned
+
+
+- Upon completion of any offline changes the image must be unmounted and the changes committed:
+
+dism /Unmount-Image /MountDir:C:/Folder /Commit
+
+
+- If Mount Stuck:
+
+C:\Windows\System32>dism /get-mountedwiminfo
+C:\Windows\System32>dism /cleanup-wim
