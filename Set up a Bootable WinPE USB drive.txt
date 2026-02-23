@@ -1,0 +1,31 @@
+Set up a Bootable WinPE USB drive:
+
+⦁ Use a drive that’s at least 16GB.
+
+⦁ UEFI requires FAT32 for booting, but you can keep the rest of the USB as NTFS.
+
+⦁ Make a Two-Partition USB (UEFI + Large NTFS).
+  diskpart
+  list disk
+  select disk X
+  clean
+
+⦁ Create the FAT32 boot partition:
+  create partition primary size=2000
+  format fs=fat32 quick label="BOOT"
+  assign letter=E
+⦁ Create the large NTFS partition:
+  create partition primary
+  format fs=ntfs quick label="IMAGES"
+  assign letter=F
+  exit
+
+⦁ On the Technician PC, open the “Deployment and Imaging Tools Environment” as Administrator, this is under “Windows Kits” in the Start Menu. 
+  Copy the WinPE files to a working folder (the folder will be created automatically):
+  copype amd64 C:\WinPE
+
+⦁ Copy the WinPE files to your USB key.
+  makewinpemedia /ufd C:\WinPE E:
+
+  Where E: is the FAT32 partition of the USB drive. 
+  This will format the USB drive and erase any data that’s on it.
