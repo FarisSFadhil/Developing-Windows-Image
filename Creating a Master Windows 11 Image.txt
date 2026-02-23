@@ -1,0 +1,14 @@
+Creating a Master Windows 11 Image:
+
+⦁ Using Rufus or some other similar tool, create a bootable USB stick using the OEM Windows 11 IoT LTSC image provided by Microsoft. 
+⦁ Upgrade the Reference PC BIOS to the latest revision using the related vendor procedure. 
+⦁ Install Windows 11 IoT Enterprise LTSC on the Reference PC using this bootable USB stick.
+⦁ Because this will be a master Windows 11 image for the organization, you must use Product Key Entry Activation PKEA when installing it. 
+⦁ The key is provided in OPK_Win11_IoTEnt_LTSC_24H2_2024_x64 OEM
+  Note that you will *NOT* be able to activate the installation with this key, the activation Product Key is different and will be applied during deployment.
+⦁ After installing Windows 11 to the Reference PC, start the system in Audit Mode. This can be done in two ways:
+  1. When the Out-Of-Box-Experience (OOBE) runs during the Windows Setup process, which asks you to specify the region of the PC, language, etc. you can press: Ctrl + Shift + F3
+  2. If the OOBE has already been completed, the system can be restarted in Audit mode any time using the sysprep tool. 
+     In the Command Prompt type: C:\Windows\System32\sysprep\sysprep.exe /audit
+⦁ Now that the installation has been started in Audit Mode it is ready to be customized.
+⦁ Before any customization you may want to capture a copy of the system as is for reference/backup purposes. See the section on how to capture an image for deployment.
