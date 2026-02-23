@@ -1,0 +1,27 @@
+The Procedure:
+
+⦁ Setup deployment tools on the Technician PC.
+⦁ Using the OEM Windows image provided by Microsoft, install Windows on a Reference PC using the OEM Key.
+⦁ Boot the Reference PC in Audit Mode.
+⦁ Customize the Reference PC in Audit Mode.
+⦁ Install the latest cumulative update package.
+⦁ Install the latest Windows Defender definitions.
+⦁ Install hardware drivers.
+⦁ Install software.
+⦁ Set any desired Group Policy Objects (Windows Update, Power Options, etc.).
+⦁ Use Sysprep to generalize the PC and prepare it for image capture.
+⦁ Boot the system into WinPE.
+⦁ Capture the Windows image using DISM, writing the image to the local drive.
+⦁ Copy the local Windows image either to a network share or an attached external drive.
+⦁ Make a backup copy of the Windows image in a safe place, either on the Technician PC or a network share.
+⦁ This first captured image is considered the master image.
+⦁ Use DISM to further customize the master image offline:
+⦁ Install drivers for additional hardware configurations:
+⦁ Install any additional packages or updates in offline mode.
+⦁ Make an answer file for unattended setup:
+⦁ Clean/Setup drive partitions.
+⦁ Set desired power plan.
+⦁ Set system region, time zone, regional options.
+⦁ Setup a user with password.
+⦁ Embed Product Key.
+⦁ Deploy the images to Inventory PCs.
