@@ -1,0 +1,306 @@
+INTRODUCTION	 
+
+Windows Setup can be automated using XML files. Creating, editing, and managing these files is best done using the Windows System Image Manager (WSIM). This document details the settings used for our customized ECHO and Wafer Windows 10 IoT Enterprise images. 
+
+NOTE: Because these are XML files it is very tempting to simply modify them manually, but this can be very risky! The Answer File format has very strict rules about the format of data for each element AND whether a given element is allowed to be empty. Certain Components / Settings can only be applied to certain Passes, also. It is highly recommended to use WSIM to ensure compliance and keep the Answer File valid. 
+
+
+
+Understanding windows 11 Setup 
+
+Windows 11 Setup is designed to be executed across several different “Passes”. There are seven different Passes of the installation where settings from an unattended file can be applied. These stages are: 
+
+windowsPE 
+
+These settings are used during the pre-installation phase (windowsPE is the Windows Pre-Installation Environment). 
+
+offlineServicing 
+
+These settings are applied when doing offlineServicing to an image. 
+
+Generalize 
+
+These settings are used when the sysprep tool generalizes an image prior to capture. 
+
+Specialize 
+
+These settings are used when an image is being deployed. 
+
+auditSystem 
+
+These settings are used for System specific options applied when the system is put into Audit mode. 
+
+audit User 
+
+These settings are used for User specific options applied when the system is put into Audit mode. 
+
+oobeSystem 
+
+These settings are used during the Out-Of-Box-Experience (OOBE) which would run when a customer first takes the PC out of the box. Since our PCs are already embedded in tools, we have decided to automate through OOBE to simplify PC setup for the Production Team. 
+
+ 
+
+Getting Started with WSIM 
+
+WSIM is a powerful tool with many different options. This document will only detail specifically what we’re using to automate our customized Windows 10 IoT Enterprise image installations. For anything outside of the scope of this document you’ll need to research and try it yourself. 
+
+Before you can configure an Answer File you must first select an existing Windows image (WIM file).  
+
+Go to File…Select Windows Image… 
+
+Choose the WIM file for which you’d like to configure an Answer File. 
+
+If this is the first time you’ve chosen, this WIM file WSIM will notify you that you must have a valid catalog file to continue and ask if you’d like to create one. Choose “Yes”. 
+
+If this is NOT the first time you’ve opened this WIM file or you’re opening an existing Answer File (which will load it’s associated WIM) WSIM will check that the existing catalog is still valid. If WIM has changed since the last time the catalog was generated, you’ll be notified that the catalog is out of date. Choose “Yes” to re-create the catalog. 
+
+Creating the catalog can take some time depending on the size of your WIM. 
+
+Once the catalog is created you can now continue and create / edit your Answer File. 
+
+ 
+
+Answer File Settings Summary 
+
+Details regarding these Components and their respective settings can be found via the Help menu of WSIM (redirects to Microsoft website for Unattended Windows Setup Reference). 
+
+Pass 1 WindowsPE 
+
+amd64_Microsoft-Windows-International-Core-WinPE_neutral 
+
+Base Settings 
+
+InputLocale: en-US 
+
+SystemLocale: en-US 
+
+UILanguage: en-US 
+
+UserLocale: en-US 
+
+SetupUILanguage 
+
+UILanguage: en-US 
+
+amd64_Microsoft-Windows-Setup_neutral 
+
+DiskConfiguration 
+
+Disk[DiskID=”0”] (0-based index; ECHO Systems: DiskID=”0”, Wafer Systems: DiskID=”2”) 
+
+Base Settings 
+
+Action: AddListItem 
+
+DiskID: 0 
+
+WillWipeDisk: true (wipes the disk clean if not empty) 
+
+CreatePartitions 
+
+CreatePartition[Order=”1”] 
+
+Action: AddListItem 
+
+Extend: false (means size must be specified) 
+
+Order: 1 
+
+Size: 100 (MB) 
+
+Type: EFI 
+
+CreatePartition[Order=”2”] 
+
+Action: AddListItem 
+
+Extend: false (means size must be specified) 
+
+Order: 2 
+
+Size: 16 (MB) 
+
+Type: MSR 
+
+CreatePartition[Order=”3”] 
+
+Action: AddListItem 
+
+Extend: true (extend partition to use all available space) 
+
+Order: 3 
+
+Size: <blank> 
+
+Type: Primary 
+
+ModifyPartitions 
+
+ModifyPartition[Order=”1”] 
+
+Action: AddListItem 
+
+Format: FAT32 (EFI partition must be FAT32) 
+
+Label: System 
+
+Letter: <none> (EFI partition is not visible) 
+
+Order: 1 
+
+PartitionID: 1 (1-based index, assigned in order created above) 
+
+ModifyPartition[Order=”2”] 
+
+Action: AddListItem 
+
+Format: NTFS 
+
+Label: Windows 
+
+Letter: C 
+
+Order: 2 
+
+PartitionID: 3 (1-based index, assigned in order created above) 
+
+ImageInstall 
+
+OSImage 
+
+Base Settings 
+
+Compact: false 
+
+WillShowUI: OnError 
+
+InstallTo 
+
+DiskID: 0 (ECHO Systems: DiskID=”0”, Wafer Systems: DiskID=”2”) 
+
+PartitionID: 3 (Partition 1: EFI, Partition 2: MSR, Partition 3: Primary) 
+
+UserData 
+
+Base Settings 
+
+AcceptEula: true (skips the End User License Agreement (EULA) screen) 
+
+ProductKey 
+
+Key: XXXXX-XXXXX-XXXXX-XXXXX-XXXXX 
+
+ 
+
+Pass 4 specialize 
+
+amd64_Microsoft-Windows-powercpl_neutral 
+
+Base Settings 
+
+PreferredPlan: 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c (High Performance) 
+
+amd64_Microsoft-Windows-Shell-Setup_neutral 
+
+Base Settings 
+
+OEMName: Sonix, Inc. (not required but thought it would be nice to include) 
+
+ProductKey: XXXXX-XXXXX-XXXXX-XXXXX-XXXXX 
+
+TimeZone: Eastern Standard Time 
+
+ 
+
+Pass 7 oobeSystem 
+
+amd64_Microsoft-Windows-International-Core_neutral 
+
+Base Settings 
+
+InputLocale: en-US 
+
+SystemLocale: en-US 
+
+UILanguage: en-US 
+
+UILanguageFallback: en-US 
+
+UserLocale: en-US 
+
+amd64_Microsoft-Windows-Shell-Setup_neutral 
+
+Base Settings 
+
+TimeZone: Eastern Standard Time 
+
+OOBE 
+
+HideEULAPage: true 
+
+HideLocalAccountScreen: true 
+
+HideOEMRegistrationScreen: true 
+
+HideOnlineAccountScreens: true 
+
+HideWirelessSetupInOOBE: true 
+
+ProtectYourPC: 3 (maximum privacy protection, no location-based features, tracking, etc) 
+
+UserAccounts 
+
+LocalAccounts 
+
+LocalAccount[Name=”Sonix_INC”] 
+
+Base Settings 
+
+Action: AddListItem 
+
+Description: Sonix INC 
+
+DisplayName: Sonix INC (this is the name that will be seen on screen) 
+
+Group: Administrators 
+
+Name: Sonix_INC (this is the name “behind-the-scenes”, used for directory structures, etc. It’s better that this name does NOT include spaces in it) 
+
+Password 
+
+Value: WINIC (NOTE: When setting or changing the Password Value in WSIM it will remain visible in plain-text until the Answer File is reloaded. When the settings are saved to XML this Password Value is encrypted/hashed. Loading/reloading the Answer File will show the encrypted/hashed Password Value as it is stored in the file.) 
+
+ 
+
+Adding Components / Settings to the Answer File 
+
+The lower left of the WSIM window is a pane for the currently loaded Windows Image (WIM): 
+
+A screenshot of a computer
+
+Description automatically generated with medium confidence 
+
+Expand the Components Folder to explore all the different Components and their accompanying settings. 
+
+There are a LOT of different components, consult the Help menu of WSIM (redirects to Microsoft website for Unattended Windows Setup Reference) for more information. 
+
+One thing to note: 
+
+The Components prefixed with “amd64” are used with 64-bit Windows. You should always be using the “amd64” prefixed Components. 
+
+The Components prefixed with “wow64” are used with WoW64 (commonly referred to as Windows-32-On-Windows-64) which is the 32-bit Windows compatibility layer within 64-bit Windows. There should be no reason to use “wow64” prefixed Components. 
+
+To add a new Component / Setting: 
+
+Explore the Components Folder to find the desired Component / Setting. 
+
+Right-click on the Component / Setting. A context menu will appear where you will choose which Pass to add this Setting to. This menu will only allow you to choose a Pass where the setting will be valid. 
+A screenshot of a computer program
+
+Description automatically generated with medium confidence 
+
+The Component / Setting will now be in the Answer File tree. 
+
+Click on the Component / Setting in the Answer File tree to set all necessary parameters. 
+
+ 
