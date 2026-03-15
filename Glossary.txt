@@ -1,0 +1,39 @@
+Glossary	 
+
+Technician PC – A PC with Windows Activation and Deployment Kit (ADK) with Windows PE add-on kit installed. 
+
+Reference PC – A PC with hardware that represents the system that will ship. 
+
+Inventory PC – A PC that will be embedded into a tool (either an ECHO or WAFER system) 
+
+OEM Key – A Windows key that is used when creating the OEM / Master image on a Reference PC. This key can NOT be used for system activation – activation will fail with this key, and the system will behave as if it has no product key. This is not the same key as the Product Key. 
+
+Product Key – A Windows key to be used when deploying the customized image to an inventory PC. This is a single key that will be embedded during deployment and used for all systems. This is a different key from the OEM Key. 
+
+Certificate of Authenticity (CofA) Sticker – Every inventory PC MUST have a CofA sticker applied to the chassis of the PC before it is shipped. The embedded product key plus the CofA sticker constitutes a full, valid license. 
+
+“High-End” Windows 11 IoT Enterprise stickers must be affixed to the “high-end” PC configurations with a Xeon w5-2455X processor (high-end Echo or Wafer systems) 
+
+The CofA stickers / licenses are purchased through Kontron (Formerly bSquare), our current Microsoft licensing partner. 
+
+Sysprep – sysprep.exe: The Windows Utility that is used to prepare a Windows image for deployment 
+
+ 
+
+Deployment Image Servicing and Management (DISM) – dism.exe: The Windows Utility for mounting windows images or virtual hard disks for servicing. 
+
+ 
+
+Windows System Image Manager (WSIM) – wsim.exe: The Windows Utility for authoring answer files, adding driver packages, or adding other payloads to the image offline 
+
+ 
+
+Audit Mode: A Windows mode that tracks any changes made to the system while booted in Audit mode. This mode logs in to Windows using the built-in Administrator account. 
+
+ 
+
+Out-Of-Box-Experience (OOBE): OOBE is the first thing a user would see on a freshly deployed Windows image. Sonix automates this process for ease of deployment and consistency between systems. 
+
+ 
+
+Windows PE (WinPE): The Windows Pre-Installation Environment. This boot environment provides a shell and tools for managing Windows deployment and capturing Windows images. 
