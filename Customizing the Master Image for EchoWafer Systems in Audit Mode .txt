@@ -1,0 +1,69 @@
+Customizing the Master Image for Echo/Wafer Systems in Audit Mode 
+
+In Audit Mode the system is running using the built-in Administrator account, which is normally disabled or hidden these days. Behind the scenes the system tracks everything that is done with respect to Group Policy Objects, software installations, and other system/user settings. 
+
+Delete the folder named “Windows.old” from the “C:\” drive root directory if it exists as this folder can cause the deployment process of the syspreped image to fail.  
+
+Run “Disk Cleanup” utility on the “C:\” drive making sure to check all the boxes available. 
+
+Note that not ALL actions performed in Audit Mode will persist across deployments. 
+
+Any hardware installations will NOT be retained: 
+
+There is an option for hardware installations to persist, but we will not be using this so that we do not need to update the image for every little hardware change made. 
+
+Many user level changes are NOT retained: 
+
+Making desktop changes as a user would, such as when we make helpful shortcuts during build/QC, usually do not persist. There are other methods for making these changes persist throughout deployments, see additional Microsoft documentation for details. 
+
+Most taskbar changes that user would make also don’t persist unless you follow certain procedures. See additional Microsoft documentation for details. 
+
+Most system level changes must be made either through Group Policy Objects (GPO) or registry entries. 
+
+Some system level changes are implemented through the unattended setup script. 
+
+Make any desired changes to the system in Audit Mode: 
+
+Download and install all the manufacturer drivers corresponding to the Reference PC hardware configuration. 
+
+Copy all the installed drivers from the following folder: 
+
+ 
+C:\Windows\System32\DriverStore\FileRepository 
+
+ 
+
+Save the copied drivers at the root location of the corresponding deployment flash drive: 
+
+ 
+
+D:\FileRepository 
+
+Where: D:\ is the corresponding deployment flash drive 
+
+ 
+
+Install helpful system software that will be used for all systems (motion control software, sensor access/control, text editing utilities, image editing utilities) 
+
+Note that we have specifically decided NOT to have WinIC pre-installed on the image. WinIC will be installed after the image is deployed. 
+
+Make any necessary GPO changes. Some changes already implemented are: 
+
+Automatic Windows Updates are turned off 
+
+Driver updates from Windows Update are not allowed 
+
+IE11 is disabled 
+
+Apply the latest cumulative update. Microsoft does *NOT* recommend running Windows Update while in Audit Mode. 
+
+Instead of using Windows Update, download and install the latest cumulative update available on www.catalog.update.microsoft.com 
+
+Search for “cumulative update” 
+
+Download and install the latest Microsoft Defender Antivirus definitions: 
+
+https://www.microsoft.com/en-us/wdsi/defenderupdates 
+
+For convenience we have chosen to install all WinIC pre-requisites into the customized Windows image. This streamlines WinIC installation later. 
+

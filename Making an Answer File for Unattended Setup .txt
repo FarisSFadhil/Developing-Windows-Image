@@ -1,0 +1,20 @@
+Making an Answer File for Unattended Setup 
+
+To make deployment as easy as possible for the Production team at Sonix we have automated the Windows Setup/Deployment process to be almost entirely unattended. The steps that are now automated are as follows: 
+
+Input Locale, System Locale, and Setup UI Language all set to “en-US” (English, United States) 
+
+Disk Partitioning, Where to Install Windows OS 
+
+Product Key* 
+
+Default Power Plan (Maximum Performance) 
+
+OEM Name, Time Zone 
+
+Skip all UI in OOBE, protect privacy (turn off all options that collect user data) 
+
+Add local account “Sonix_INC” with typical “XXXXX” password 
+
+Details on how all of these are currently set are in a separate document: 
+Unattended_Win10IoTEnt_Setup.pdf  

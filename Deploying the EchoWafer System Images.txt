@@ -1,0 +1,31 @@
+Deploying the Echo/Wafer System Images 
+
+Preparing images for deployment 
+
+After capturing the image and storing / using it on the Technician PC to configure an unattended setup XML using the Windows System Image Manager (WSIM) it is nearly ready to be deployed. The last step is to prepare it for putting onto a USB stick. In our case we are choosing to deploy the customized Windows image on a USB stick and simply have the Windows Setup run and do nearly everything in an unattended manner. 
+
+First the original OEM image file (26100.1742.240906-0331.CLIENT_ENTERPRISES_OEM_x64FRE_en-us.iso) needs to be mounted and then copied to a local folder. These files are the base Windows installation that was used to install the master image on the Reference PC. 
+
+Right-click the iso file and choose “Mount” from the context menu. 
+
+If the “Mount” option is not available on the context menu, you might need to install the Microsoft Media Tool (provided: MicrosoftMediaTool.msi). 
+
+Then copy all files / folders to a local folder 
+
+Within the local folder find the “install.wim” file. This is in the “sources” subfolder. 
+
+Delete the “install.wim” file. 
+
+Copy the customized WIM file into the “sources” subfolder. 
+
+Rename the customized WIM file to be “install.wim” 
+
+This step is very important! It will not work properly otherwise. 
+
+Add the appropriate unattended setup XML file to the root folder of the windows copy 
+
+Rename the unattended setup XML file to be “autounattend.xml” 
+
+This step is very important! It will not work properly otherwise. 
+
+Copy this updated local Windows copy to the USB stick – all files and folders. 

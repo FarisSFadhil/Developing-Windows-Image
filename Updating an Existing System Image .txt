@@ -1,0 +1,25 @@
+Updating an Existing System Image 
+
+There are two ways to update an existing system image: 
+
+Grab a Reference PC and install the existing image. 
+
+Do NOT attempt to activate this installation. 
+
+Boot the Reference PC into Audit Mode (using sysprep). 
+
+Make any desired changes in Audit Mode. 
+
+Use sysprep to prepare the system for capture. 
+
+Capture the updated image using the WinPE USB stick and DISM. 
+
+Store the updated image on the Technician PC for later deployment. 
+
+Make a copy of the existing image WIM file on the Technician PC. 
+
+Mount the new copy of the image to be modified. 
+
+Make any desired changes offline using DISM. 
+
+Unmount the new copy, being sure to commit the changes. 

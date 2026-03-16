@@ -1,0 +1,160 @@
+Capturing an Image for Deployment:
+
+To capture an image for deployment there are several steps to follow. 
+
+On the Reference PC, while booted in Audit Mode, use sysprep to complete the Audit process and prepare for capture: 
+
+C:\Windows\System32\Sysprep\Sysprep.exe /generalize /oobe /shutdown 
+
+DO NOT power the Reference PC back on until you are ready to capture an image. If the device boots into Windows, you’ll have to go through the sysprep process again. 
+
+Insert the WinPE USB drive into the Reference PC 
+
+Remember which F-key brings up the boot menu during the BIOS startup. 
+
+For our current systems this key is F11. 
+
+Turn on the Reference PC while constantly pressing the boot menu key (F11). Keep hitting it during bootup until you see the boot menu. Very often the amount of time you must press this key is very short, just a second or two. 
+
+From the boot menu choose the USB key/WinPE option. 
+
+WinPE will boot and then show a Command prompt. 
+
+From the WinPE Command prompt, run Diskpart: 
+
+diskpart 
+
+List the disks so you can identify the disk where Windows IoT Enterprise is installed: 
+
+list disk 
+
+You should see something like: 
+
+Disk ###  Status          Size     	Free     Dyn  	Gpt 
+
+--------  	-------------      -------  	-------  	---  	0--- 
+
+Disk 0    Online            931 GB       0 B        		 * 
+
+Disk 1    Online            14 GB      	 0 B 
+
+In this example, Disk 0 size represents the disk where we installed Windows IoT Enterprise: 
+
+Select Disk 0 and then list the partitions and volumes: 
+
+select Disk 0 
+
+list partition 
+
+list volume 
+
+You should see something like: 
+
+DISKPART> select disk 0 
+
+Disk 0 is now the selected disk. 
+
+DISKPART> list partition 
+
+Partition ###  Type              Size     Offset 
+
+-------------  ----------------  -------  ------- 
+
+Partition 1    System             100 MB  1024 KB 
+
+Partition 2    Reserved            16 MB   101 MB 
+
+Partition 3    Primary             63 GB   117 MB 
+
+Partition 4    Recovery           602 MB    63 GB 
+
+ 
+
+DISKPART> list volume 
+
+ 
+
+Volume ###  Ltr  Label        Fs     Type        Size     Status     Info 
+
+----------  ---  -----------  -----  ----------  -------  ---------  -------- 
+
+Volume 0     D                UDF    DVD-ROM     4236 MB  Healthy     
+
+Volume 1                      NTFS   Partition     980 GB  Healthy     
+
+Volume 2                      FAT32  Partition    100 MB  Healthy    Hidden 
+
+Volume 3                      NTFS   Partition    602 MB  Healthy    Hidden 
+
+Volume 4     C   WINPE        FAT32  Partition   2048 MB  Healthy 
+
+Volume 5     E   INSTALL      NTFS   Partition     14 GB  Healthy 
+
+ 
+
+In this example: 
+
+Partition 3 is of the type Primary and is where Windows IoT Enterprise is installed.  
+
+Letters C and E are assigned to WinPE and INSTALL volumes respectively. 
+
+Letter D is assigned to the DVD-ROM volume. 
+
+Select Partition 3 and assign a drive letter that isn't already in use: 
+
+select partition 3 
+
+assign letter=W 
+
+If you list volume again, you should see the Windows IoT Enterprise partition now has a drive letter assigned: 
+
+Volume ###  Ltr  Label        Fs     Type        Size     Status     Info 
+
+----------  ---  -----------  -----  ----------  -------  ---------  -------- 
+
+Volume 0     D                UDF    DVD-ROM     4236 MB  Healthy     
+
+Volume 1     W                NTFS   Partition     980 GB  Healthy     
+
+Volume 2                      FAT32  Partition    100 MB  Healthy    Hidden 
+
+Volume 3                      NTFS   Partition    602 MB  Healthy    Hidden 
+
+Volume 4     C   WINPE        FAT32  Partition   2048 MB  Healthy 
+
+Volume 5     E   Install       NTFS   Partition     14 GB  Healthy 
+
+ 
+
+Exit Diskpart: 
+
+exit 
+
+From the WinPE Command prompt, use DISM to capture an image of the Windows partition: 
+
+dism /capture-image /imagefile:E:\Windows11IoTEnterprise.wim /CaptureDir:W:\ /Name:"Windows 11 IoT Enterprise" 
+
+Where: “E:” is the NTFS removable volume “adjust paths as needed”. 
+
+DISM captures an image of the OS partition and stores it on D: drive: 
+
+Deployment Image Servicing and Management tool
+Version: 10.0.26100.1
+
+Saving image
+[=======================================================================]
+The operation completed successfully.
+
+x:\Windows\System32> 
+
+
+Note the device will have more than one partition but only the Windows partition needs to be captured. The other partitions will be handled during deployment. 
+
+
+Shut down the virtual machine: 
+X:\Windows\System32>wpeutil shutdown 
+
+
+The newly created “Windows11IoTEnterprise.wim” is now saved at the NTFS partition of the USB stick. 
+
+Store the captured WIM file in a safe place on the Technician PC.  

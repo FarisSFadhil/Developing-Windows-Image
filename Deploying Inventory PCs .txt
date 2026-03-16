@@ -1,0 +1,27 @@
+Deploying Inventory PCs:
+
+ We have two main Windows images for Production: An Echo image and a Wafer image. Each image has software and drivers set up especially for those two different kinds of systems. There are two USB sticks on the Production floor for deployment with attached labels. 
+
+Make sure that the correct USB stick is used for the correct type of system! 
+
+Insert the USB stick into the Inventory PC 
+
+Turn it on (or reboot it) 
+
+Keep hitting F11 to get to the boot menu of the PC 
+
+Boot using the USB stick, you should see Windows 10 Setup run but it will not ask for any input. It will do everything on its own. 
+
+When installation is complete log in to the system using the Sonix_INC account (password: XXXXX) 
+
+Check the PCs activation status. Assuming the PC has been connected to the internet, activate it. 
+
+If Windows says that there is no product key, or the product key could not be found or the product key is not valid then choose the option for using a different product key. 
+
+Apply multi-activation key: 
+
+Note this key should never be used or shared except for use with Echo or Wafer PCs that we ship/build. 
+
+ 
+
+Attach a Certificate of Authenticity (CofA) sticker to the PC chassis. See the USB stick’s attached label for the appropriate location. This sticker MUST be applied to every system we activate and ship with this key. 

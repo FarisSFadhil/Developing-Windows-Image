@@ -1,0 +1,47 @@
+Adding Drivers to the Offline Mounted Image: 
+
+Add additional hardware drivers. This is where we’d add drivers for other hardware configurations so that the deployed image would work across several different hardware configurations using the drivers we have approved. 
+
+Drivers must be added to the offline mounted image. 
+
+To add drivers to an offline mounted image they must already be extracted out into INF, SYS, CAT, etc. files. 
+
+Extract the .exe to get the .inf driver files. Many .exe driver installers can be extracted using command-line switches, such as: 
+
+ 
+
+driver.exe /extract C:\Drivers 
+
+ 
+
+If there are any unsigned drivers keep them in a separate parent folder from the other drivers. 
+
+Use: 
+
+C:\Drivers\Signed for signed drivers. 
+
+C:\Drivers\Unsigned for unsigned drivers. 
+
+Create the following folder for the offline image to be mounted: C:\Offline 
+
+On the Technician PC, where the offline image has been copied, mount the image. In this example: 
+
+The offline image is in: “C:\ “ 
+
+Is named: “Master.wim”  
+
+Will be mounted to: “C:\Offline” 
+
+C:\Windows\System32>DISM.exe /Mount-Wim /WimFile:C:\Master.wim /index:1 /MountDir:C:\Offline 
+
+Install all the extracted, signed drivers in the folder to the image using the /Recurse option: 
+
+dism /Image:C:\Offline /Add-Driver /Driver:c:\drivers\signed /Recurse 
+
+Install all the extracted, unsigned drivers in the folder to the image using the /Recurse option: 
+
+dism /Image:C:\Offline /Add-Driver /Driver:c:\drivers\unsigned /Recurse /ForceUnsigned 
+
+Upon completion of any offline changes the image must be unmounted and the changes committed: 
+
+dism /Unmount-Image /MountDir:C:/Offline /Commit 
