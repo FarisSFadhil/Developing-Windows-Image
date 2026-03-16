@@ -1,6 +1,6 @@
 The Procedure:
 
-⦁ Setup deployment tools on the Technician PC.
+⦁ Setup deployment tools on the Technician PC, refer to Microsoft for the latest ADK.
 ⦁ Create a bootable USB drive.
 ⦁ Set up a Bootable WinPE USB drive.
 ⦁ Using the OEM Windows image provided by Microsoft, install Windows on a Reference PC using the OEM Key.
